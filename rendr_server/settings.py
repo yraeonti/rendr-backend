@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-&spkhvak87cepej=8no+o7#b^$goj%2q19inulzq5s&1r!@3l9'
+SECRET_KEY = getenv('SECRET_KEY_DJANGSS')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -102,8 +102,7 @@ SIMPLE_JWT = {
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
+local_db_config = {
         'ENGINE': 'django.db.backends.postgresql',
         "NAME": "rendr",
         "USER": "victorbello",
@@ -111,6 +110,19 @@ DATABASES = {
         "HOST": "127.0.0.1",
         "PORT": "5432"
     }
+
+cloud_db_config = {
+        'ENGINE': 'django.db.backends.postgresql',
+        "NAME": "rendr",
+        "USER": getenv("DB_USERNAME_SW"),
+        "PASSWORD": getenv("DB_PASS_SW"),
+        "HOST": getenv("DB_HOST_SW"),
+        "PORT": "5432"
+    }
+
+
+DATABASES = {
+    'default': cloud_db_config
 }
 
 
