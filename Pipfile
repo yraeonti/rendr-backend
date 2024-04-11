@@ -9,6 +9,7 @@ djangorestframework = "*"
 djangorestframework-simplejwt = "*"
 psycopg = "*"
 bcrypt = "*"
+python-dotenv = "*"
 
 [dev-packages]
 

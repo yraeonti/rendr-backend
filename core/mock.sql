@@ -1,0 +1,1 @@
+insert into core_requestcategory(item, created_at, updated_at) values ('General Supplies', now(), now()), ('Software Purchases', now(), now()), ('Equipments', now(), now()), ('Others', now(), now());

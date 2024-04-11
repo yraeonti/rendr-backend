@@ -12,6 +12,10 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 from datetime import timedelta
+from dotenv import load_dotenv
+from os import getenv
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -38,7 +42,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.messages',
     'rest_framework',
-    'authentication'
+    'authentication',
+    'core'
 ]
 
 MIDDLEWARE = [
@@ -51,7 +56,11 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+# Url Settings 
+
 ROOT_URLCONF = 'rendr_server.urls'
+
+APPEND_SLASH=False
 
 TEMPLATES = [
     {
@@ -79,11 +88,14 @@ REST_FRAMEWORK = {
     )
 }
 
+# JWT CONFIGURATIONS
+
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
-    "SIGNING_KEY": SECRET_KEY,
-    "TOKEN_OBTAIN_SERIALIZER": "authentication.serializer.MyTokenObtainPairSerializer"
+    "ACCESS_TOKEN_LIFETIME": timedelta(hours=12),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=3),
+    "SIGNING_KEY": getenv("SECRET_AUTH_KEY"),
+    "TOKEN_OBTAIN_SERIALIZER": "authentication.serializer.MyTokenObtainPairSerializer",
+    "JSON_ENCODER": "django.core.serializers.json.DjangoJSONEncoder"
 }
 
 
@@ -148,3 +160,6 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+
