@@ -1,0 +1,21 @@
+Name,Item,Price,Color,Approver
+Sarah,Laptop,"$1,200",Silver,Emily
+Oluwaseyi,Office Chair,$250,Black,Michael
+Tunde,Printer,$175,White,Sarah
+Chinelo,Headphones,$80,Blue,Tunde
+Adaora,Keyboard,$45,Black,Chinelo
+Femi,External Drive,$110,Grey,Oluwaseyi
+Funmilayo,Coffee Mug,$15,Red,Adaora
+Kunle,Desk Lamp,$35,Silver,Femi
+David,Filing Cabinet,$300,Beige,Funmilayo
+Ibrahim,Monitor,$220,Black,Kunle
+Jumoke,Notebook,$12,Yellow,David
+Esther,Mouse Pad,$8,Green,Ibrahim
+Tolulope,Whiteboard,$50,White,Jumoke
+Bisola,Projector,$400,Black,Esther
+Ayomide,Bluetooth Speaker,$70,Teal,Tolulope
+Adewale,Sticky Notes,$5,Multicolor,Bisola
+James,Phone Charger,$20,White,Ayomide
+Abimbola,Desk Organizer,$30,Pink,Adewale
+Mary,Office Plant,$25,Green,James
+Titilope,Stress Ball,$7,Orange,Abimbola
