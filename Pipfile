@@ -10,6 +10,7 @@ djangorestframework-simplejwt = "*"
 psycopg = "*"
 bcrypt = "*"
 python-dotenv = "*"
+django-cors-headers = "*"
 
 [dev-packages]
 
