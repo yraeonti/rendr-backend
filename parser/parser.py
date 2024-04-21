@@ -1,8 +1,9 @@
 import csv
 import pandas as pd
 import os
+import codecs
 
-def parse_file(file_path):
+def parse_file(file, file_ext):
     """Checks if a file is CSV or Excel, parses it, and returns a dictionary.
 
     Args:
@@ -15,19 +16,16 @@ def parse_file(file_path):
         ValueError: If the file format is not supported.
     """
 
-    file_ext = os.path.splitext(file_path)[1].lower()
+    if file_ext in ('.csv', 'csv'):
+        reader = csv.reader(codecs.iterdecode(file, 'utf-8'))
+        header = next(reader)  # Get the header row
+        data = {column: [] for column in header}
+        for row in reader:
+            for col_name, value in zip(header, row):
+                data[col_name].append(value)
 
-    if file_ext == '.csv':
-        with open(file_path, 'r') as file:
-            reader = csv.reader(file)
-            header = next(reader)  # Get the header row
-            data = {column: [] for column in header}
-            for row in reader:
-                for col_name, value in zip(header, row):
-                    data[col_name].append(value)
-
-    elif file_ext in ('.xls', '.xlsx'):
-        df = pd.read_excel(file_path)
+    elif file_ext in ('.xls', '.xlsx', 'xls', 'xlsx'):
+        df = pd.read_excel(file)
         data = df.to_dict('list')
 
     else:
@@ -38,7 +36,9 @@ def parse_file(file_path):
 if __name__ == "__main__":
     file_path = input("Enter the file path: ")
     try:
-        file_data = parse_file(file_path)
-        print(file_data)
+        file_ext = os.path.splitext(file_path)[1].lower()
+        with open(file_path, 'rb') as file:
+            file_data = parse_file(file, file_ext)
+            print(file_data)
     except (FileNotFoundError, ValueError) as e:
         print(f"Error: {e}") 
