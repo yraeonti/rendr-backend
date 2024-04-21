@@ -11,6 +11,8 @@ psycopg = "*"
 bcrypt = "*"
 python-dotenv = "*"
 django-cors-headers = "*"
+openpyxl = "*"
+pandas = "*"
 
 [dev-packages]
 

@@ -23,3 +23,12 @@ class RequestSerializer(serializers.ModelSerializer):
     class Meta:
         model = Request
         fields = ['request_id', 'user', 'procure_items', 'approvals', 'status', 'created_at', 'request_category']
+
+class ParseRequestFileSerializer(serializers.Serializer):
+    file = serializers.FileField()
+
+    def validate_file(self, value):
+        ext = value.name.split(".")[1]
+        if ext not in ('csv', 'xlsx'):
+            raise serializers.ValidationError("Invalid File type")
+        return value

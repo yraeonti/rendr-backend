@@ -6,6 +6,8 @@ from core import serializers
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 import random
 from core.permissions import IsOwner
+from parser.parser import parse_file
+from pathlib import Path
 
 # Create your views here.
 
@@ -68,6 +70,30 @@ class SingleRequest(generics.RetrieveUpdateDestroyAPIView):
     queryset = models.Request.objects.all()
     serializer_class = serializers.RequestSerializer
     permission_classes = [IsAuthenticated, IsOwner]
+
+
+class ParseRequestFile(generics.GenericAPIView):
+    serializer_class = serializers.ParseRequestFileSerializer
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(self, data=request.FILES)
+        if serializer.is_valid() is False:
+            return Response(data=serializer.errors, status=400)
+        print(serializer.validated_data['file'])
+        file = serializer.validated_data['file']
+
+        ext = file.name.split(".")[1]
+
+        # curr_dir = Path.cwd()
+
+        # file_path = f"{curr_dir}/core/tmp/{request.user.id}.{ext}"
+
+        # print(file_path)
+
+        data = parse_file(file, ext)
+
+        return Response(data=data, status=200)
 
 
 

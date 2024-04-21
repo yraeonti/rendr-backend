@@ -7,5 +7,6 @@ urlpatterns = format_suffix_patterns([
     path('request_categories', views.RequestCategory.as_view(), name='categories'),
     path('requests', views.Requests.as_view(), name='requests'),
     path('request/<int:pk>', views.SingleRequest.as_view(), name='request'),
-    path('bulk_create_employees', views.BulkCreateEmployee.as_view(), name='bulk_employees')
+    path('bulk_create_employees', views.BulkCreateEmployee.as_view(), name='bulk_employees'),
+    path('parse_request_file', views.ParseRequestFile.as_view(), name='parse_request_file'),
 ])
