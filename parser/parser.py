@@ -4,13 +4,14 @@ import os
 import codecs
 
 def parse_file(file, file_ext):
-    """Checks if a file is CSV or Excel, parses it, and returns a dictionary.
+    """Checks if a file is CSV or Excel, parses it, and returns a list of dictionaries.
 
     Args:
         file_path (str): The path to the file.
 
     Returns:
-        dict: A dictionary with column names as keys and lists of values as items.
+        list: A list of dictionaries where each dictionary represents a row
+              with column names as keys and values as list items.
 
     Raises:
         ValueError: If the file format is not supported.
@@ -19,14 +20,14 @@ def parse_file(file, file_ext):
     if file_ext in ('.csv', 'csv'):
         reader = csv.reader(codecs.iterdecode(file, 'utf-8'))
         header = next(reader)  # Get the header row
-        data = {column: [] for column in header}
+        data = []
         for row in reader:
-            for col_name, value in zip(header, row):
-                data[col_name].append(value)
+            row_dict = {column: value for column, value in zip(header, row)}
+            data.append(row_dict)
 
     elif file_ext in ('.xls', '.xlsx', 'xls', 'xlsx'):
         df = pd.read_excel(file)
-        data = df.to_dict('list')
+        data = df.to_dict('records')
 
     else:
         raise ValueError(f"Unsupported file format: {file_ext}")
@@ -41,4 +42,4 @@ if __name__ == "__main__":
             file_data = parse_file(file, file_ext)
             print(file_data)
     except (FileNotFoundError, ValueError) as e:
-        print(f"Error: {e}") 
+        print(f"Error: {e}")
