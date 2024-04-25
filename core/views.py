@@ -5,9 +5,10 @@ from core import models
 from core import serializers
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 import random
-from core.permissions import IsOwner
+from core.permissions import IsOwner, IsEmployeeOwner
 from parser.parser import parse_file
 from pathlib import Path
+from django.db.models import Q
 
 # Create your views here.
 
@@ -48,7 +49,23 @@ class BulkCreateEmployee(generics.GenericAPIView):
 class SingleEmployee(generics.RetrieveUpdateDestroyAPIView):
     queryset = models.Employee.objects.all()
     serializer_class = serializers.EmployeesSerializer
-    permission_classes = [IsAuthenticated, IsOwner]
+    permission_classes = [IsAuthenticated, IsEmployeeOwner]
+
+class SearchEmployees(generics.ListAPIView):
+    queryset = models.Employee.objects.all()
+    serializer_class = serializers.EmployeesSerializer
+    permission_classes = [IsAuthenticated, IsEmployeeOwner]
+    
+    def list(self, request, *args, **kwargs):
+        data = self.get_queryset()
+        obj = data
+        if 'search' in request.query_params:
+            obj = data.filter(Q(name__contains=request.query_params['search']) | Q(email__contains=request.query_params['search']))
+        serializer = self.get_serializer(obj, many=True)
+        return Response(serializer.data)
+
+
+
 
 
 # views for the request functionality

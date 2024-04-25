@@ -8,9 +8,10 @@ from core.models import (
 
 
 class EmployeesSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(read_only=True)
     class Meta:
         model = Employee
-        fields = ['name', 'email', 'role']
+        fields = ['id', 'name', 'email', 'role']
 
 class RequestCategorySerializer(serializers.ModelSerializer):
     class Meta:
@@ -29,6 +30,6 @@ class ParseRequestFileSerializer(serializers.Serializer):
 
     def validate_file(self, value):
         ext = value.name.split(".")[1]
-        if ext not in ('csv', 'xlsx'):
+        if ext not in ('csv', 'xlsx', 'xls'):
             raise serializers.ValidationError("Invalid File type")
         return value
