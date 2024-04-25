@@ -52,9 +52,8 @@ class SingleEmployee(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated, IsEmployeeOwner]
 
 class SearchEmployees(generics.ListAPIView):
-    queryset = models.Employee.objects.all()
     serializer_class = serializers.EmployeesSerializer
-    permission_classes = [IsAuthenticated, IsEmployeeOwner]
+    permission_classes = [IsAuthenticated]
     
     def list(self, request, *args, **kwargs):
         data = self.get_queryset()
@@ -63,6 +62,11 @@ class SearchEmployees(generics.ListAPIView):
             obj = data.filter(Q(name__contains=request.query_params['search']) | Q(email__contains=request.query_params['search']))
         serializer = self.get_serializer(obj, many=True)
         return Response(serializer.data)
+    
+    def get_queryset(self):
+        user = self.request.user
+        data = models.Employee.objects.filter(company=user)
+        return data
 
 
 
