@@ -37,7 +37,7 @@ class BulkCreateEmployee(generics.GenericAPIView):
     permission_classes = [IsAuthenticated, IsAdminUser]
 
     def post(self, *args, **kwargs):
-        serializer = self.get_serializer(self, data=self.request.data, many=True)
+        serializer = self.get_serializer(data=self.request.data, many=True)
         if serializer.is_valid() is False:
             return Response(data=serializer.errors, status=400)
         print(serializer.validated_data)
@@ -115,6 +115,30 @@ class ParseRequestFile(generics.GenericAPIView):
         data = parse_file(file, ext)
 
         return Response(data=data, status=200)
+    
+class ParseBulkEmployeesFile(generics.GenericAPIView):
+    serializer_class = serializers.ParseBulkEmployeesFileSerializer
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(self, data=request.FILES)
+        if serializer.is_valid() is False:
+            return Response(data=serializer.errors, status=400)
+        file = serializer.validated_data['file']
+
+        ext = file.name.split(".")[1]
+
+        data = parse_file(file, ext)
+
+        serializerEmployee = serializers.EmployeesSerializer(data=data, many=True)
+        if serializerEmployee.is_valid() is False:
+            return Response(data=serializerEmployee.errors, status=400)
+        
+        employees_data = [models.Employee(**item, company_id=self.request.user.id) for item in serializerEmployee.validated_data]
+        
+        models.Employee.objects.bulk_create(employees_data)
+        return Response(data={"message": "Employees created"}, status=201)
+
 
 
 

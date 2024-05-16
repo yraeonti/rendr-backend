@@ -8,8 +8,9 @@ from django.utils.translation import gettext_lazy as _
 
 class Employee(models.Model):
     name = models.CharField()
-    email = models.EmailField()
+    email = models.EmailField(unique=True)
     role = models.CharField()
+    password = models.CharField(default=None, null=True)
     company = models.ForeignKey(User, on_delete=models.CASCADE, related_name="employees")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

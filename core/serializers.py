@@ -9,6 +9,7 @@ from core.models import (
 
 class EmployeesSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(read_only=True)
+    
     class Meta:
         model = Employee
         fields = ['id', 'name', 'email', 'role']
@@ -33,3 +34,7 @@ class ParseRequestFileSerializer(serializers.Serializer):
         if ext not in ('csv', 'xlsx', 'xls'):
             raise serializers.ValidationError("Invalid File type")
         return value
+    
+
+class ParseBulkEmployeesFileSerializer(ParseRequestFileSerializer):
+    pass
