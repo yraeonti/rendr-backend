@@ -25,7 +25,9 @@ class Employees(generics.ListCreateAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        data = models.Employee.objects.filter(user=user)
+        print(user)
+        data = models.Employee.objects.filter(company=user)
+        print(data)
         return data
     
     def perform_create(self, serializer):
